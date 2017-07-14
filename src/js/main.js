@@ -65,11 +65,40 @@ function Tree() {
   this.root = null;
 }
 Tree.prototype = {
-  add: function(n){
-    if(Node.prototype.isPrototypeOf(n)) {
-      if(!this.root) {
-        this.root = n;
+  add: function(node, targetCriteria){
+    var targetNode = this.search(targetCriteria);
+
+    if(!Node.prototype.isPrototypeOf(node)) {
+      return;
+    }
+    
+    if(!this.root) {
+      this.root = node; //Adds it as root element
+      return;
+    } 
+    
+    if(targetNode) {
+      targetNode.addChildren(node);
+    } else {
+      //Add as child root
+      this.root.addChildren(node);
+    }
+  },
+  search: function(criteria) {
+    if(!this.root)
+      return null;
+    
+    var nodesToVisit = [];
+    var curr = this.root;
+    
+    while(curr) {
+      nodesToVisit = nodesToVisit.concat(curr.children);
+      
+      if (criteria.call(this, curr)){
+        return curr;
       }
+      
+      curr = nodesToVisit.shift();
     }
   }
 };
@@ -86,7 +115,20 @@ var di = new District('253', 'La Molina', p);
 var peru = new Tree();
 peru.add(new Node(u));
 
+peru.add(new Node(d), function(node){
+  return node.data.cod === u.cod;
+});
 console.log(peru);
+
+//Search sample
+/*
+var r = peru.search(function(node){
+  return node.data.cod === '0';
+});
+console.log(r);
+*/
+
+
 
 /*
 

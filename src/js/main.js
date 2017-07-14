@@ -1,17 +1,20 @@
 console.log('Start');
 
 //Model classes
-function Ubigeo(cod, name) {
+function Ubigeo(cod, name, parent) {
   this.cod = cod;
   this.name = name;
-  this.parent = null;
+  
+  if(parent){
+    this.setParent(parent);
+  }
 }
 Ubigeo.prototype = {
   print: function() {
     console.log('Código: ' + this.cod + ', name: ' + this.name);
     
     var p = this.parent;
-    if(p !== null) {
+    if(p !== null && p !== undefined) {
       console.log('Y mi padre es: ' + p.cod + ', ' + p.name);
     }
   },
@@ -21,8 +24,8 @@ Ubigeo.prototype = {
 };
 
 
-function Department(id, name) {
-  Ubigeo.call(this, id, name);
+function Department(id, name, parent) {
+  Ubigeo.call(this, id, name, parent);
 };
 Department.prototype = Object.create(Ubigeo.prototype);
 Department.prototype.setParent = function(ubigeo) {
@@ -32,38 +35,58 @@ Department.prototype.setParent = function(ubigeo) {
 };
 
 
-function Province(id, name) {
-  Ubigeo.call(this, id, name);
+function Province(id, name, parent) {
+  Ubigeo.call(this, id, name, parent);
 };
 Province.prototype = Object.create(Ubigeo.prototype);
 
 
-function District(id, name) {
-  Ubigeo.call(this, id, name);
+function District(id, name, parent) {
+  Ubigeo.call(this, id, name, parent);
 };
 District.prototype = Object.create(Ubigeo.prototype);
 
 
+//Represents an element of the tree, for this problem, an Ubigeo object.
+function Node(data) {
+  this.data = data;
+  this.parent = null;
+  this.children = [];
+}
+Node.prototype = {
+  addChildren: function(node) {
+    node.parent = this;
+    this.children.push(node);
+  }
+};
+
+//Represents the tree, container of Ubigeos
+function Tree() {
+  this.root = null;
+}
+Tree.prototype = {
+  add: function(n){
+    if(Node.prototype.isPrototypeOf(n)) {
+      if(!this.root) {
+        this.root = n;
+      }
+    }
+  }
+};
 
 
 
-var u = new Ubigeo('02', 'Arequipa');
-u.print();
-
+var u = new Ubigeo('0', 'Peru');
 var d = new Department('01', 'Lima');
-d.setParent(u);
-d.print();
-
-var p = new Province('52', 'Barranca');
-p.setParent(d);
-p.print();
-
-var di = new District('253', 'La Molina');
-di.setParent(p);
-di.print();
+var p = new Province('52', 'Barranca', d);
+var di = new District('253', 'La Molina', p);
 
 
+//Structure to keep data
+var peru = new Tree();
+peru.add(new Node(u));
 
+console.log(peru);
 
 /*
 
@@ -136,6 +159,30 @@ ModuleHome.prototype.config = function () {
     thisModule.sponsorActive = data['sponsor-active'];
     thisModule.logoPath = data['logo-path'];
   });
+};
+
+function Hash(){
+  this.length = 0;
+  this.data = {};
+}
+Hash.prototype = {
+  getLength: function(){
+    return this.length;
+  },
+  addElement: function(key, value) {
+    if(this.data.hasOwnProperty(key)) {
+      this.length++;
+    }
+    
+    this.data[key] = value;
+  },
+  print: function() {
+    console.log('Este hash tiene ' + this.length);
+    
+    for(var key in this.data) {
+      console.log(this.data[key]);
+    }
+  }
 };
 
 */

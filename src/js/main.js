@@ -88,6 +88,9 @@ Tree.prototype = {
     if(!this.root)
       return null;
     
+    if(!criteria)
+      return null;
+    
     var nodesToVisit = [];
     var curr = this.root;
     
@@ -104,11 +107,86 @@ Tree.prototype = {
 };
 
 
+function CountryModule(){
+  this.rawData = null;
+  this.tree = new Tree();
+  this.tree.add(new Node(new Ubigeo('0', 'Peru')));
+};
+CountryModule.prototype = {
+  readData: function() {
+    var xhr = new XMLHttpRequest();
+    var cm = this;
+    
+    xhr.onreadystatechange = function (){
+      if(xhr.readyState === XMLHttpRequest.DONE) {
+        if (xhr.status === 200) {
+          cm.rawData = xhr.responseText;
+          cm.processData();
+        } else {
+          alert('Data not available');
+        }
+      }
+    };
+    
+    xhr.open('get', '../data/data.txt');
+    xhr.send();
+  },
+  processData: function() {
+    var lines = this.rawData.split("\n");
+    var tree = this.tree;
+    
+    lines.forEach(function(l){
+      l = l.replace(/[”“]+/g, '');
+      
+      var u = l.split(' / ');
+      u = u.map(function(el) {
+        if(el.length < 1)
+          return [''];
+        
+        var idx = el.indexOf(' ');
+        
+        return [el.substring(0, idx), el.substring(idx + 1)];
+      });
+      
+      if(u[2].length === 2) {
+        //It is a District
+        var di = new District(u[2][0], u[2][1]);
+        
+        tree.add(new Node(di), function (node) {
+          return node.data.cod === u[1][0]; //Searches for a Province
+        });
+      } else if(u[1].length === 2) {
+        //Province defined
+        var p = new Province(u[1][0], u[1][1]);
+        
+        tree.add(new Node(p), function (node) {
+          return node.data.cod === u[0][0]; //Searches for a Department
+        });
+      } else if(u[0].length === 2) {
+        //Department defined
+        var p = new Department(u[0][0], u[0][1]);
+        
+        tree.add(new Node(p));
+      } else {
+        console.error('No proper ubigeo defined in data');
+      }
+      
+    });
+  }
+};
 
+
+var cm = new CountryModule();
+cm.readData();
+
+console.log(cm.tree);
+
+/*
 var u = new Ubigeo('0', 'Peru');
 var d = new Department('01', 'Lima');
 var p = new Province('52', 'Barranca', d);
 var di = new District('253', 'La Molina', p);
+var di2 = new District('253', 'El Palmar', p);
 
 
 //Structure to keep data
@@ -118,7 +196,25 @@ peru.add(new Node(u));
 peru.add(new Node(d), function(node){
   return node.data.cod === u.cod;
 });
+
+peru.add(new Node(p), function(node){
+  return node.data.cod === d.cod;
+});
+
+peru.add(new Node(di), function(node){
+  return node.data.cod === p.cod;
+});
+
+peru.add(new Node(di2), function(node){
+  return node.data.cod === p.cod;
+});
+
+
 console.log(peru);
+*/
+
+
+
 
 //Search sample
 /*

@@ -172,155 +172,47 @@ CountryModule.prototype = {
       }
       
     });
+    
+    this.showData();
+  },
+  showData: function() {
+    var departments = [];
+    var provinces = [];
+    var districts = [];
+    
+    var nodesToVisit = [];
+    var curr = this.tree.root;
+    
+    while(curr) {
+      nodesToVisit = nodesToVisit.concat(curr.children);
+      
+      var targetArray = null;
+      
+      if (Department.prototype.isPrototypeOf(curr.data)){
+        targetArray = departments;
+      }
+      if (Province.prototype.isPrototypeOf(curr.data)){
+        targetArray = provinces;
+      }
+      if (District.prototype.isPrototypeOf(curr.data)){
+        targetArray = districts;
+      }
+      
+      if(targetArray) {
+        targetArray.push(curr.data);
+      }
+      
+      curr = nodesToVisit.shift();
+    }
+    
+    
+    console.log(departments);
+    console.log(provinces);
+    console.log(districts);
+    
   }
 };
 
 
 var cm = new CountryModule();
 cm.readData();
-
-console.log(cm.tree);
-
-/*
-var u = new Ubigeo('0', 'Peru');
-var d = new Department('01', 'Lima');
-var p = new Province('52', 'Barranca', d);
-var di = new District('253', 'La Molina', p);
-var di2 = new District('253', 'El Palmar', p);
-
-
-//Structure to keep data
-var peru = new Tree();
-peru.add(new Node(u));
-
-peru.add(new Node(d), function(node){
-  return node.data.cod === u.cod;
-});
-
-peru.add(new Node(p), function(node){
-  return node.data.cod === d.cod;
-});
-
-peru.add(new Node(di), function(node){
-  return node.data.cod === p.cod;
-});
-
-peru.add(new Node(di2), function(node){
-  return node.data.cod === p.cod;
-});
-
-
-console.log(peru);
-*/
-
-
-
-
-//Search sample
-/*
-var r = peru.search(function(node){
-  return node.data.cod === '0';
-});
-console.log(r);
-*/
-
-
-
-/*
-
-//Stage contiene los atributos de las etapas, en el prototype define los métodos disponibles
-function Stage(id){
-  this.id = id;
-}
-Stage.prototype = {
-  setDate: function(dateString) {
-    this.date = dateString;
-  }
-};
-
-function LiveStage(id){
-  Stage.call(this, id);
-  this.remainingKm = 0;
-  this.liveComments = [];
-}
-LiveStage.prototype = Object.create(Stage.prototype);
-LiveStage.prototype.setRemainingKms = function (kms){
-  this.remainingKm = kms;
-};
-LiveStage.prototype.setLiveComments = function (commentsArray){
-  this.liveComments = commentsArray;
-};
-
-//Generalización de los módulos a desarrollar para el especial
-function Module(configFile){
-  this.configFile = configFile;
-  this.sponsorActive = false;
-  this.logoPath = '';
-  this.stagesPath = '';
-  this.stages = [];
-}
-Module.prototype = {
-  readData: function() {
-    console.log('Este método debería ser sobre-escrito por una de sus clases hijas para leer la información que necesita');
-  },
-  render: function() {
-    console.log('Este método debería ser sobre-escrito por una de sus clases hijas para mostrar contenido');
-  },
-  update: function() {
-    this.readData();
-  },
-  config: function() {
-    console.log('Este método debería ser sobre-escrito por una de sus clases hijas para inicializar el módulo');
-  }
-};
-
-
-function ModuleHome(configFile) {
-  Module.call(this, configFile);
-
-  this.stage = null;
-  this.linkToResults = '#';
-  this.linkToSpecial = '#';
-  this.commentPath = '';
-  
-  this.config();
-}
-ModuleHome.prototype = Object.create(Module.prototype);
-ModuleHome.prototype.config = function () {
-  var thisModule = this;
-  
-  jsonReader.readJSON(this.configFile, function(data){
-    thisModule.linkToResults = data['link-to-results'];
-    thisModule.linkToSpecial = data['link-to-special'];
-    thisModule.stagesPath = data['stages-path'];
-    thisModule.commentPath = data['live-comments-path'];
-    thisModule.sponsorActive = data['sponsor-active'];
-    thisModule.logoPath = data['logo-path'];
-  });
-};
-
-function Hash(){
-  this.length = 0;
-  this.data = {};
-}
-Hash.prototype = {
-  getLength: function(){
-    return this.length;
-  },
-  addElement: function(key, value) {
-    if(this.data.hasOwnProperty(key)) {
-      this.length++;
-    }
-    
-    this.data[key] = value;
-  },
-  print: function() {
-    console.log('Este hash tiene ' + this.length);
-    
-    for(var key in this.data) {
-      console.log(this.data[key]);
-    }
-  }
-};
-
-*/

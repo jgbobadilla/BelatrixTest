@@ -1,0 +1,50 @@
+$main-font: 'Lato', sans-serif;
+$font-base: 18px;
+
+//Colors
+$greyb: #bbb;
+$greye: #eee;
+$highlight-color: #822828;
+
+$background-grad1: $greyb;
+$background-grad2: $greye;
+$border-color: $highlight-color;
+
+body {
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(45deg, $background-grad1 0%, $background-grad2 70%);
+  font-family: $main-font;
+  font-size: $font-base;
+}
+
+* {
+  box-sizing: border-box;
+  
+  &:after, &:before {
+    box-sizing: border-box;
+  }
+}
+
+.main-container {
+  padding: 20px;
+}
+
+.ubigeo-table {
+  margin: 40px auto;
+  border-collapse: collapse;
+  min-width: 500px;
+  border: 1px solid $border-color;
+  
+  caption {
+    padding: 15px;
+    text-transform: uppercase;
+  }
+  
+  td, th {
+    min-width: 100px;
+    padding: 5px 10px;
+    text-align: center;
+    border: 1px solid $border-color;
+  }
+}

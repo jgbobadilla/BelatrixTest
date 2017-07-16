@@ -1,0 +1,26 @@
+{
+  "name": "BellatrixTest",
+  "version": "1.0.0",
+  "description": "Implementation of BellatrixSF Test.",
+  "main": "main.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@bitbucket.org:jgbobadilla/belatrixsftest.git"
+  },
+  "keywords": [
+    "test",
+    "bellatrixsf"
+  ],
+  "author": "juabob, Gab0",
+  "license": "MIT",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-sass": "^3.1.0"
+  }
+}

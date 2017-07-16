@@ -23,10 +23,10 @@ Ubigeo.prototype = {
     var container = document.getElementById('main-container');
 
     var table = document.createElement('table');
-    table.setAttribute('class', tablename);
+    table.setAttribute('class', 'ubigeo-table ' + tablename);
 
     table.appendChild(htmlToElement('<caption>' + tablename + '</caption>'));
-    table.appendChild(htmlToElement('<tr><th>Codigo</th><th>Nombre</th><th>Codigo</th><th>Nombre</th></tr>'));
+    table.appendChild(htmlToElement('<tr><th>Code</th><th>Name</th><th>Code</th><th>Name</th></tr>'));
 
     ubigeosArray.forEach( function(u) {
       row = htmlToElement('<tr>' 
@@ -87,6 +87,7 @@ function Tree() {
 Tree.prototype = {
   add: function(node, targetCriteria){
     var targetNode = this.search(targetCriteria);
+    console.log(targetNode);
 
     if(!Node.prototype.isPrototypeOf(node)) {
       return;
@@ -99,6 +100,7 @@ Tree.prototype = {
     
     if(targetNode) {
       targetNode.addChildren(node);
+      node.data.setParent(targetNode.data);
     } else {
       //Add as child root
       this.root.addChildren(node);

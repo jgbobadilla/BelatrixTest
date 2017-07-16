@@ -1,0 +1,13 @@
+/* line 13, src/scss/main.scss */ body { margin: 0; padding: 0; background: linear-gradient(45deg, #bbb 0%, #eee 70%); font-family: "Lato", sans-serif; font-size: 18px; }
+
+/* line 21, src/scss/main.scss */ * { box-sizing: border-box; }
+
+/* line 24, src/scss/main.scss */ *:after, *:before { box-sizing: border-box; }
+
+/* line 29, src/scss/main.scss */ .main-container { padding: 20px; }
+
+/* line 33, src/scss/main.scss */ .ubigeo-table { margin: 40px auto; border-collapse: collapse; min-width: 500px; border: 1px solid #822828; }
+
+/* line 39, src/scss/main.scss */ .ubigeo-table caption { padding: 15px; text-transform: uppercase; }
+
+/* line 44, src/scss/main.scss */ .ubigeo-table td, .ubigeo-table th { min-width: 100px; padding: 5px 10px; text-align: center; border: 1px solid #822828; }

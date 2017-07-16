@@ -1,5 +1,3 @@
-console.log('Start');
-
 //Model classes
 function Ubigeo(cod, name, parent) {
   this.cod = cod;
@@ -20,6 +18,28 @@ Ubigeo.prototype = {
   },
   setParent: function(ubigeo) {
     this.parent = ubigeo;
+  },
+  printUbigeosTable: function(ubigeosArray, tablename) {
+    var container = document.getElementById('main-container');
+
+    var table = document.createElement('table');
+    table.setAttribute('class', tablename);
+
+    table.appendChild(htmlToElement('<caption>' + tablename + '</caption>'));
+    table.appendChild(htmlToElement('<tr><th>Codigo</th><th>Nombre</th><th>Codigo</th><th>Nombre</th></tr>'));
+
+    ubigeosArray.forEach( function(u) {
+      row = htmlToElement('<tr>' 
+              + '<td>' + u.cod + '</td>'
+              + '<td>' + u.name + '</td>'
+              + '<td>' + (u.parent ? u.parent.cod : '-') + '</td>'
+              + '<td>' + (u.parent ? u.parent.name : '-') + '</td>'
+              + '</tr>');
+
+      table.appendChild(row);
+    });
+
+    container.appendChild(table);
   }
 };
 
@@ -205,14 +225,17 @@ CountryModule.prototype = {
       curr = nodesToVisit.shift();
     }
     
-    
-    console.log(departments);
-    console.log(provinces);
-    console.log(districts);
-    
+    Ubigeo.prototype.printUbigeosTable(departments, 'departments');
+    Ubigeo.prototype.printUbigeosTable(provinces, 'provinces');
+    Ubigeo.prototype.printUbigeosTable(districts, 'districts');
   }
 };
 
+function htmlToElement(html) {
+  var dummy = document.createElement('template');
+  dummy.innerHTML = html;
+  return dummy.content.firstChild;
+}
 
 var cm = new CountryModule();
 cm.readData();

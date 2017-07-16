@@ -8,14 +8,6 @@ function Ubigeo(cod, name, parent) {
   }
 }
 Ubigeo.prototype = {
-  print: function() {
-    console.log('Código: ' + this.cod + ', name: ' + this.name);
-    
-    var p = this.parent;
-    if(p !== null && p !== undefined) {
-      console.log('Y mi padre es: ' + p.cod + ', ' + p.name);
-    }
-  },
   setParent: function(ubigeo) {
     this.parent = ubigeo;
   },
@@ -192,7 +184,6 @@ CountryModule.prototype = {
       } else {
         console.error('No proper ubigeo defined in data');
       }
-      
     });
     
     this.showData();
@@ -239,5 +230,6 @@ function htmlToElement(html) {
   return dummy.content.firstChild;
 }
 
+//Init module and put it to work
 var cm = new CountryModule();
 cm.readData();
